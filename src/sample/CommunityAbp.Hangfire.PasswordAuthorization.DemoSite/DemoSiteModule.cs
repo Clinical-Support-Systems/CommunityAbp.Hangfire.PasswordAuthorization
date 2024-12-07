@@ -190,8 +190,7 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization.DemoSite;
     typeof(AbpEntityFrameworkCoreSqlServerModule),
 
     // Add the custom module
-    typeof(AbpBackgroundJobsHangfireModule),
-    typeof(HangfirePasswordAuthorizationModule)
+    typeof(CommunityAbpHangfirePasswordAuthorizationModule)
 )]
 public class DemoSiteModule : AbpModule
 {

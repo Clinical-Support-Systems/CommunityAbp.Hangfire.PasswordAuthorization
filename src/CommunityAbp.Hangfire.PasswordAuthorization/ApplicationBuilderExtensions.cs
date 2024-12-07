@@ -31,7 +31,7 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
             // Configure dashboard options
             var dashboardOptions = new DashboardOptions
             {
-                Authorization = new[] { new HangfirePasswordAuthorizationFilter() }
+                Authorization = new[] { new HangfirePasswordAuthorizationFilterAttribute() }
             };
             configureDashboard?.Invoke(dashboardOptions);
 
