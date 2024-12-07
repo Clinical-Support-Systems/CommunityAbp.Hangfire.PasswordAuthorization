@@ -1,0 +1,12 @@
+﻿{
+  "applications": {
+    "CommunityAbp.Hangfire.PasswordAuthorization.DemoSite": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44356",
+      "path": "../../CommunityAbp.Hangfire.PasswordAuthorization.DemoSite/CommunityAbp.Hangfire.PasswordAuthorization.DemoSite.csproj",
+      "execution": {
+        "order": 0
+      }
+    }
+  }
+}

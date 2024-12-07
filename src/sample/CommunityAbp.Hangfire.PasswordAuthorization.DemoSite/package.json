@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "name": "my-app",
+  "private": true,
+  "dependencies": {
+    "@volo/language-management": "~9.0.1",
+    "@volo/file-management": "~9.0.1",
+    "@volo/account": "~9.0.1",
+    "@volo/saas": "~9.0.1",
+    "@volo/chat": "~9.0.1",
+    "@volo/audit-logging": "~9.0.1",
+    "@volo/identity": "~9.0.1",
+    "@abp/aspnetcore.mvc.ui.theme.basic": "~9.0.1"
+  }
+}
