@@ -39,6 +39,86 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
         public string Password { get; set; }
     }
 
+    public class FlexibleHangfireAuthorizationFilter : IDashboardAuthorizationFilter
+    {
+        private readonly FlexibleHangfireAuthOptions _options;
+
+        public FlexibleHangfireAuthorizationFilter(IOptions<FlexibleHangfireAuthOptions> options)
+        {
+            _options = options.Value;
+        }
+
+        public bool Authorize(DashboardContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            // Check if user is already authenticated via ABP (cookie-based)
+            if (httpContext.User?.Identity?.IsAuthenticated == true)
+            {
+                // If a role is specified and the user must have it
+                if (!string.IsNullOrEmpty(_options.RequiredRole))
+                {
+                    if (httpContext.User.IsInRole(_options.RequiredRole))
+                    {
+                        return true; // Has the required role
+                    }
+                }
+
+                // If specific users are allowed
+                if (_options.AllowedUsernames?.Any() == true)
+                {
+                    var username = httpContext.User.Identity.Name;
+                    if (_options.AllowedUsernames.Contains(username, StringComparer.OrdinalIgnoreCase))
+                    {
+                        return true; // Is an explicitly allowed user
+                    }
+                }
+
+                // If no specific conditions were given or user doesn't match them, fall through to next check
+            }
+
+            // If not authenticated via ABP or didn't meet ABP-based conditions, try Basic Auth check
+            var authHeader = httpContext.Request.Headers["Authorization"].ToString();
+            if (!string.IsNullOrWhiteSpace(_options.BasicAuthUsername) &&
+                !string.IsNullOrWhiteSpace(_options.BasicAuthPassword) &&
+                authHeader.StartsWith("Basic "))
+            {
+                // Validate Basic Auth credentials
+                var encodedCredentials = authHeader.Substring("Basic ".Length).Trim();
+                var credentials = System.Text.Encoding.UTF8.GetString(
+                    Convert.FromBase64String(encodedCredentials)).Split(':');
+
+                if (credentials.Length == 2)
+                {
+                    var user = credentials[0];
+                    var pass = credentials[1];
+
+                    if (user.Equals(_options.BasicAuthUsername, StringComparison.OrdinalIgnoreCase) &&
+                        pass == _options.BasicAuthPassword)
+                    {
+                        return true; // Basic Auth success
+                    }
+                }
+            }
+
+            // If we reach here, none of the methods worked
+            return false;
+        }
+    }
+
+    public class FlexibleHangfireAuthOptions
+    {
+        // Role that ABP-authenticated user must have (optional)
+        public string? RequiredRole { get; set; }
+
+        // A list of ABP usernames allowed to access (optional)
+        public List<string>? AllowedUsernames { get; set; }
+
+        // Basic auth fallback credentials (optional)
+        public string? BasicAuthUsername { get; set; }
+        public string? BasicAuthPassword { get; set; }
+    }
+
     public class HangfirePasswordAuthorizationFilter : AuthorizeAttribute, IDashboardAuthorizationFilter
     {
         [Authorize]

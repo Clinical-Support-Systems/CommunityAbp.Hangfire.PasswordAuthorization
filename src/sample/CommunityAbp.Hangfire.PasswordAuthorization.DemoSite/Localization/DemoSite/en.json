@@ -13,6 +13,7 @@
     "ExternalProvider:Twitter": "Twitter",
     "ExternalProvider:Twitter:ConsumerKey": "Consumer key",
     "ExternalProvider:Twitter:ConsumerSecret": "Consumer secret",
-    "Menu:Home": "Home"
+    "Menu:Home": "Home",
+    "Menu:Hangfire": "Hangfire"
   }
 }

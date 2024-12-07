@@ -36,6 +36,14 @@ public class DemoSiteMenuContributor : IMenuContributor
             )
         );
 
+        context.Menu.Items.Add(
+            new ApplicationMenuItem(
+                DemoSiteMenus.Home,
+                l["Menu:Hangfire"],
+                "~/hangfire",
+                icon: "fas fa-fire"
+            )
+        );
 
         //Administration
         var administration = context.Menu.GetAdministration();

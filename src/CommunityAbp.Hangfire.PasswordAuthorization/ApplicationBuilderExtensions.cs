@@ -9,9 +9,9 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
     public static class ApplicationBuilderExtensions
     {
         public static IServiceCollection AddAbpHangfireDashboardWithLogin(
-            this IServiceCollection services,
-            Action<HangfireAuthorizationOptions> configureAuth,
-            Action<DashboardOptions>? configureDashboard = null)
+    this IServiceCollection services,
+    Action<HangfireAuthorizationOptions> configureAuth,
+    Action<DashboardOptions>? configureDashboard = null)
         {
             // Validate parameters
             ArgumentNullException.ThrowIfNull(configureAuth);
