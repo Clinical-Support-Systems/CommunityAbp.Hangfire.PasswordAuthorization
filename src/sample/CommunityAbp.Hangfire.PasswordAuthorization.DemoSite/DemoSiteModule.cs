@@ -84,6 +84,7 @@ using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Polly;
+using Volo.Abp.BackgroundJobs.Hangfire;
 
 namespace CommunityAbp.Hangfire.PasswordAuthorization.DemoSite;
 
@@ -189,6 +190,7 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization.DemoSite;
     typeof(AbpEntityFrameworkCoreSqlServerModule),
 
     // Add the custom module
+    typeof(AbpBackgroundJobsHangfireModule),
     typeof(HangfirePasswordAuthorizationModule)
 )]
 public class DemoSiteModule : AbpModule
@@ -282,6 +284,8 @@ public class DemoSiteModule : AbpModule
         {
             config.UseSqlServerStorage(configuration.GetConnectionString("Default"));
         });
+
+        services.AddHangfireServer();
     }
 
     private void ConfigureCookieConsent(ServiceConfigurationContext context)

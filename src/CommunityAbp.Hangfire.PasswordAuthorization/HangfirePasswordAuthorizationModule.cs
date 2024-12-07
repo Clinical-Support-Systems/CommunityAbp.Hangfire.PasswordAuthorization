@@ -20,12 +20,6 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
         {
             var services = context.Services;
 
-            services.Configure<HangfireAuthorizationOptions>(options =>
-            {
-                options.Username = "admin";
-                options.Password = "123456"; // Default password, should be changed
-            });
-
             services.AddScoped<IDashboardAuthorizationFilter, HangfirePasswordAuthorizationFilter>();
         }
 

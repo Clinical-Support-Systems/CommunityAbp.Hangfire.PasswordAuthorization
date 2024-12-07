@@ -16,15 +16,17 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
             // Validate parameters
             ArgumentNullException.ThrowIfNull(configureAuth);
 
-            // Configure authorization options
-            var authOptions = new HangfireAuthorizationOptions();
-            configureAuth(authOptions);
+            // Use Configure<HangfireAuthorizationOptions> to integrate with IOptions pattern
+            services.Configure<HangfireAuthorizationOptions>(options =>
+            {
+                configureAuth(options);
 
-            // Validate authorization options
-            if (string.IsNullOrWhiteSpace(authOptions.Username))
-                throw new ArgumentException("Username must not be empty", nameof(configureAuth));
-            if (string.IsNullOrWhiteSpace(authOptions.Password))
-                throw new ArgumentException("Password must not be empty", nameof(configureAuth));
+                // Validate authorization options
+                if (string.IsNullOrWhiteSpace(options.Username))
+                    throw new ArgumentException("Username must not be empty", nameof(configureAuth));
+                if (string.IsNullOrWhiteSpace(options.Password))
+                    throw new ArgumentException("Password must not be empty", nameof(configureAuth));
+            });
 
             // Configure dashboard options
             var dashboardOptions = new DashboardOptions
@@ -33,8 +35,7 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
             };
             configureDashboard?.Invoke(dashboardOptions);
 
-            // Register services
-            services.AddSingleton(authOptions);
+            // Register dashboard options as a singleton since they're not using IOptions
             services.AddSingleton(dashboardOptions);
             services.AddMemoryCache();
 
