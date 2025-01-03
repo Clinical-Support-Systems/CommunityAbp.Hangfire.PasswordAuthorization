@@ -6,12 +6,22 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CommunityAbp.Hangfire.PasswordAuthorization
 {
+    /// <summary>
+    /// Extension methods for configuring Hangfire dashboard with password authorization.
+    /// </summary>
     public static class ApplicationBuilderExtensions
     {
-        public static IServiceCollection AddAbpHangfireDashboardWithLogin(
-    this IServiceCollection services,
-    Action<HangfireAuthorizationOptions> configureAuth,
-    Action<DashboardOptions>? configureDashboard = null)
+        /// <summary>
+        /// Adds Hangfire dashboard with password authorization.
+        /// </summary>
+        /// <param name="services">The <see cref="IServiceCollection"/> to add services to.</param>
+        /// <param name="configureAuth">A delegate to configure the Hangfire authorization options.</param>
+        /// <param name="configureDashboard">A delegate to configure the Hangfire dashboard options.</param>
+        /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="configureAuth"/> is missing a username or password.</exception>
+        public static IServiceCollection AddAbpHangfireDashboardWithLogin(this IServiceCollection services,
+                                                                          Action<HangfireAuthorizationOptions> configureAuth,
+                                                                          Action<DashboardOptions>? configureDashboard = null)
         {
             // Validate parameters
             ArgumentNullException.ThrowIfNull(configureAuth);
@@ -42,6 +52,13 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
             return services;
         }
 
+        /// <summary>
+        /// Adds Hangfire dashboard with password authorization.
+        /// </summary>
+        /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
+        /// <param name="pathMatch">The path to match for the Hangfire dashboard.</param>
+        /// <param name="storage">The storage to use for Hangfire.</param>
+        /// <returns>The <see cref="IApplicationBuilder"/> so that additional calls can be chained.</returns>
         public static IApplicationBuilder UseAbpHangfireDashboardWithLogin(
             [NotNull] this IApplicationBuilder app,
             [NotNull] string pathMatch = "/hangfire",

@@ -38,24 +38,43 @@ namespace CommunityAbp.Hangfire.PasswordAuthorization
         }
     }
 
+    /// <summary>
+    /// Extension methods for configuring Hangfire dashboard with password authorization.
+    /// </summary>
     public class FlexibleHangfireAuthOptions
     {
-        // A list of ABP usernames allowed to access (optional)
+        /// <summary>
+        /// A list of ABP usernames allowed to access (optional)
+        /// </summary>
         public List<string>? AllowedUsernames { get; set; }
 
+        /// <summary>
+        /// The basic auth password 
+        /// </summary>
         public string? BasicAuthPassword { get; set; }
 
-        // Basic auth fallback credentials (optional)
+        /// <summary>
+        /// Basic auth fallback credentials (optional)
+        /// </summary>
         public string? BasicAuthUsername { get; set; }
 
-        // Role that ABP-authenticated user must have (optional)
+        /// <summary>
+        /// Role that ABP-authenticated user must have (optional)
+        /// </summary>
         public string? RequiredRole { get; set; }
     }
 
+    /// <summary>
+    /// Hangfire flexible authorization filter 
+    /// </summary>
     public class FlexibleHangfireAuthorizationFilter : IDashboardAuthorizationFilter
     {
         private readonly FlexibleHangfireAuthOptions _options;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="options">The options for Hangfire authorization</param>
         public FlexibleHangfireAuthorizationFilter(IOptions<FlexibleHangfireAuthOptions> options)
         {
             _options = options.Value;

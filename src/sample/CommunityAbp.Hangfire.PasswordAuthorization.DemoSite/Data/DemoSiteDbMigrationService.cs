@@ -174,7 +174,7 @@ public class DemoSiteDbMigrationService : ITransientDependency
         }
     }
 
-    private string GetEntityFrameworkCoreProjectFolderPath()
+    private static string GetEntityFrameworkCoreProjectFolderPath()
     {
         var slnDirectoryPath = GetSolutionDirectoryPath();
 
@@ -186,15 +186,15 @@ public class DemoSiteDbMigrationService : ITransientDependency
         return Path.Combine(slnDirectoryPath, "CommunityAbp.Hangfire.PasswordAuthorization.DemoSite");
     }
 
-    private string GetSolutionDirectoryPath()
+    private static string? GetSolutionDirectoryPath()
     {
         var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
 
-        while (Directory.GetParent(currentDirectory.FullName) != null)
+        while (currentDirectory != null && Directory.GetParent(currentDirectory.FullName) != null)
         {
             currentDirectory = Directory.GetParent(currentDirectory.FullName);
 
-            if (Directory.GetFiles(currentDirectory.FullName).FirstOrDefault(f => f.EndsWith(".sln")) != null)
+            if (currentDirectory != null && Array.Find(Directory.GetFiles(currentDirectory.FullName), f => f.EndsWith(".sln")) != null)
             {
                 return currentDirectory.FullName;
             }
