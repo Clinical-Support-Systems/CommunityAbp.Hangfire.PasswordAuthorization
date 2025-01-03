@@ -26,9 +26,10 @@ jobs:
   create_nuget:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0 # Get all history to allow versioning using MinVer
+        filter: tree:0
 
     # Install the .NET SDK indicated in the global.json file
     - name: Setup .NET
