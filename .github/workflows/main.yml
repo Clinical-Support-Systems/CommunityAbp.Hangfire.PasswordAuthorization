@@ -37,8 +37,15 @@ jobs:
       with:
         global-json-file: 'global.json'
 
+    - name: Debug Git Info
+      run: |
+        git tag -l
+        git describe --tags
+        git rev-parse HEAD
+        git log --oneline -n 5
+
     # Create the NuGet package in the folder from the environment variable NuGetDirectory
-    - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }} -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg -p:MinVerTag=$(git describe --tags)
+    - run: dotnet pack --configuration Release --output ${{ env.NuGetDirectory }} -p:IncludeSymbols=true -p:SymbolPackageFormat=snupkg
   
     # Step to prepare the artifacts by copying *.nupkg and *.snpkg files to a temporary directory
     - name: Prepare Artifacts
